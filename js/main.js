@@ -4,14 +4,15 @@ import { Cow } from './cow.js';
 const TOKEN = {
   name: 'Chronically On Web',
   ticker: '$COW',
-  ca: '', // paste the contract address here when live
+  ca: 'ZpmYmsQadhPYAWu1ygRx9KmgPzBHC4ssnLZ7m5vpump',
   supply: '1,000,000,000',
   launch: '2026-10-07T00:00:00Z', // online-streak counter starts here
   links: {
     x: 'https://x.com/cowisonline',
     tiktok: 'https://www.tiktok.com/@cowisonline',
-    dex: 'https://dexscreener.com/solana',
-    buy: 'https://jup.ag',
+    dex: 'https://dexscreener.com/solana/ZpmYmsQadhPYAWu1ygRx9KmgPzBHC4ssnLZ7m5vpump',
+    buy: 'https://jup.ag/swap/SOL-ZpmYmsQadhPYAWu1ygRx9KmgPzBHC4ssnLZ7m5vpump',
+    pump: 'https://pump.fun/coin/ZpmYmsQadhPYAWu1ygRx9KmgPzBHC4ssnLZ7m5vpump',
   },
 };
 
@@ -289,9 +290,9 @@ const APP_BUILDERS = {
   browse(body) {
     const SITES = [
       ['chart', 'Dexscreener', 'overthink the $COW chart in real time', TOKEN.links.dex],
-      ['planet', 'Jupiter', 'swap SOL → $COW with the best route', 'https://jup.ag'],
-      ['pill', 'pump.fun', 'where every cow is born', 'https://pump.fun'],
-      ['search', 'Solscan', 'verify the contract, read the chain', 'https://solscan.io'],
+      ['planet', 'Jupiter', 'swap SOL → $COW with the best route', TOKEN.links.buy],
+      ['pill', 'pump.fun', 'where every cow is born', TOKEN.links.pump],
+      ['search', 'Solscan', 'verify the contract, read the chain', 'https://solscan.io/token/ZpmYmsQadhPYAWu1ygRx9KmgPzBHC4ssnLZ7m5vpump'],
       ['ghost', 'Phantom', 'the wallet. download it, then never close it.', 'https://phantom.app'],
       ['x', 'X / Twitter', 'the posting arena — @cowisonline', TOKEN.links.x],
       ['tiktok', 'TikTok', 'cow clips, chronically — @cowisonline', TOKEN.links.tiktok],
