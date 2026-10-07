@@ -496,3 +496,65 @@ osObserver.observe(desktop);
 window.addEventListener('resize', () => {
   apps.forEach((a) => { const max = Math.max(0, winLayer.clientWidth - 100); if (a.el.offsetLeft > max) a.el.style.left = max + 'px'; });
 });
+
+// ===== MEMES: moving strip + gallery + lightbox =====
+const MEME_CAPTIONS = [
+  '3 AM. still online.', 'research mode: activated', 'posting through it', 'the chart is just vibes', 'overthinking the candle',
+  'one more tab. just one.', 'gm from the pasture', 'internet = happy place <3', 'touch grass? opened a tab about it', 'certified still online',
+  'wen moon (researching)', 'cow.exe has not stopped responding', 'late nights, meme coins, ideas', 'logging off? never heard of her',
+];
+const MEMES = MEME_CAPTIONS.map((cap, i) => {
+  const n = String(i + 1).padStart(2, '0');
+  return { n, cap, full: `img/memes/${n}.webp`, thumb: `img/memes/thumb/${n}.webp` };
+});
+
+// strips: two rows, opposite directions, duplicated for a seamless loop
+function fillStrip(el, items) {
+  const track = el.querySelector('.strip-track');
+  const html = items.map((m, i) => `<button class="strip-item" data-idx="${MEMES.indexOf(m)}" style="--tilt:${(i % 3 - 1) * 1.5}deg"><img src="${m.thumb}" alt="${m.cap}" loading="lazy" width="480" height="480" /><span>${m.cap}</span></button>`).join('');
+  track.innerHTML = html + html;
+}
+fillStrip($('#stripA'), MEMES.filter((_, i) => i % 2 === 0));
+fillStrip($('#stripB'), MEMES.filter((_, i) => i % 2 === 1));
+
+// gallery grid
+$('#gallery').innerHTML = MEMES.map((m, i) => `<button class="g-item" data-idx="${i}" style="--d:${i * 40}ms"><img src="${m.thumb}" alt="${m.cap}" loading="lazy" width="480" height="480" /><span class="g-cap"><b>#${m.n}</b> ${m.cap}</span></button>`).join('');
+
+// lightbox
+const lb = $('#lightbox'), lbImg = $('#lbImg'), lbCap = $('#lbCaption'), lbCount = $('#lbCount'), lbDl = $('#lbDownload'), lbShare = $('#lbShare');
+let lbIdx = 0, lbOpen = false;
+function showMeme(i) {
+  lbIdx = (i + MEMES.length) % MEMES.length;
+  const m = MEMES[lbIdx];
+  lbImg.src = m.full; lbImg.alt = m.cap;
+  lbCap.textContent = m.cap;
+  lbCount.textContent = `${m.n} / ${String(MEMES.length).padStart(2, '0')}`;
+  lbDl.href = m.full; lbDl.download = `cow-meme-${m.n}.webp`;
+  lbShare.href = `https://twitter.com/intent/tweet?text=${encodeURIComponent(m.cap + ' $COW — chronically on web ' + location.origin + location.pathname + '#memes')}`;
+  [lbIdx + 1, lbIdx - 1].forEach((k) => { const im = new Image(); im.src = MEMES[(k + MEMES.length) % MEMES.length].full; });
+}
+function openLightbox(i) { showMeme(i); lb.classList.add('open'); lb.setAttribute('aria-hidden', 'false'); document.body.style.overflow = 'hidden'; lbOpen = true; liveCow.play('happy'); }
+function closeLightbox() { lb.classList.remove('open'); lb.setAttribute('aria-hidden', 'true'); document.body.style.overflow = ''; lbOpen = false; }
+document.addEventListener('click', (e) => {
+  const t = e.target.closest('.strip-item, .g-item');
+  if (t) openLightbox(+t.dataset.idx);
+});
+$('#lbClose').addEventListener('click', closeLightbox);
+$('#lbPrev').addEventListener('click', () => showMeme(lbIdx - 1));
+$('#lbNext').addEventListener('click', () => showMeme(lbIdx + 1));
+lb.addEventListener('click', (e) => { if (e.target === lb) closeLightbox(); });
+document.addEventListener('keydown', (e) => {
+  if (!lbOpen) return;
+  if (e.key === 'Escape') closeLightbox();
+  else if (e.key === 'ArrowRight') showMeme(lbIdx + 1);
+  else if (e.key === 'ArrowLeft') showMeme(lbIdx - 1);
+});
+let swipeX = null;
+lb.addEventListener('touchstart', (e) => { swipeX = e.touches[0].clientX; }, { passive: true });
+lb.addEventListener('touchend', (e) => {
+  if (swipeX === null) return;
+  const dx = e.changedTouches[0].clientX - swipeX; swipeX = null;
+  if (Math.abs(dx) > 50) showMeme(lbIdx + (dx < 0 ? 1 : -1));
+});
+const gObs = new IntersectionObserver((en) => en.forEach((x) => { if (x.isIntersecting) { x.target.classList.add('in'); gObs.unobserve(x.target); } }), { threshold: 0.15 });
+$$('.g-item').forEach((el) => gObs.observe(el));

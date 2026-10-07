@@ -65,6 +65,10 @@
     <symbol id="i-sparkle" viewBox="0 0 24 24"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8Z"/><path d="M19 17l.7 2 2 .7-2 .7-.7 2-.7-2-2-.7 2-.7Z"/></symbol>
     <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol>
     <symbol id="i-tiktok" viewBox="0 0 24 24"><path d="M16.5 3c.3 2.3 1.7 3.9 4 4.1v3.1c-1.5 0-2.9-.5-4-1.3v6.4a5.6 5.6 0 1 1-5.6-5.6c.3 0 .6 0 .9.1v3.2a2.5 2.5 0 1 0 1.6 2.3V3h3.1z" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="M18 6L6 18"/><path d="M6 6l12 12"/></symbol>
+    <symbol id="i-left" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></symbol>
+    <symbol id="i-right" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M4 21h16"/></symbol>
     <symbol id="i-tab" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 9h20"/><path d="M6 6.5h.01M9 6.5h.01"/></symbol>
   </svg>
 
@@ -85,6 +89,7 @@
       <a href="#about">About</a>
       <a href="#live">Live</a>
       <a href="#os">COW OS</a>
+      <a href="#memes">Memes</a>
       <a href="#tokenomics">Tokenomics</a>
       <a href="#buy">How to buy</a>
       <a href="#roadmap">Roadmap</a>
@@ -172,6 +177,16 @@
           </div>
         </div>
       </div>
+    </section>
+
+    <!-- MEME STRIP -->
+    <section class="memestrip" aria-label="COW memes, scrolling">
+      <div class="memestrip-head">
+        <span class="eyebrow">// fresh from the feed</span>
+        <a href="#memes" class="muted small">open the gallery →</a>
+      </div>
+      <div class="strip strip-a" id="stripA"><div class="strip-track"></div></div>
+      <div class="strip strip-b" id="stripB"><div class="strip-track"></div></div>
     </section>
 
     <!-- LIVE -->
@@ -262,6 +277,14 @@
       </div>
     </section>
 
+    <!-- GALLERY -->
+    <section class="section gallery-section" id="memes">
+      <p class="eyebrow center">// meme gallery</p>
+      <h2 class="h2 center">14 moods of a chronically online cow.</h2>
+      <p class="muted center">Tap any meme to open it. Save it, post it, overthink it.</p>
+      <div class="gallery" id="gallery"></div>
+    </section>
+
     <!-- TOKENOMICS -->
     <section class="section" id="tokenomics">
       <p class="eyebrow center">// tokenomics</p>
@@ -318,6 +341,23 @@
       </div>
     </section>
   </main>
+
+  <div class="lightbox" id="lightbox" aria-hidden="true" role="dialog" aria-label="Meme viewer">
+    <button class="lb-close" id="lbClose" aria-label="Close"><svg class="ico"><use href="#i-close"/></svg></button>
+    <button class="lb-nav lb-prev" id="lbPrev" aria-label="Previous"><svg class="ico"><use href="#i-left"/></svg></button>
+    <figure class="lb-figure">
+      <img id="lbImg" alt="" />
+      <figcaption class="lb-cap">
+        <span id="lbCaption"></span>
+        <span class="lb-actions">
+          <span class="mono muted" id="lbCount"></span>
+          <a id="lbDownload" class="btn btn-ghost" download><svg class="ico"><use href="#i-download"/></svg> Save</a>
+          <a id="lbShare" class="btn btn-primary" target="_blank" rel="noopener">Post on <svg class="ico"><use href="#i-x"/></svg></a>
+        </span>
+      </figcaption>
+    </figure>
+    <button class="lb-nav lb-next" id="lbNext" aria-label="Next"><svg class="ico"><use href="#i-right"/></svg></button>
+  </div>
 
   <footer class="footer">
     <div class="foot-inner">
