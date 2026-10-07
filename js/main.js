@@ -8,8 +8,7 @@ const TOKEN = {
   supply: '1,000,000,000',
   launch: '2026-10-07T00:00:00Z', // online-streak counter starts here
   links: {
-    x: 'https://x.com/',
-    telegram: 'https://t.me/',
+    x: 'https://x.com/cowisonline',
     dex: 'https://dexscreener.com/solana',
     buy: 'https://jup.ag',
   },
@@ -37,7 +36,6 @@ $('#navBurger').addEventListener('click', () => $('#nav').classList.toggle('open
 $$('.nav-links a').forEach((a) => a.addEventListener('click', () => $('#nav').classList.remove('open')));
 $('#year').textContent = new Date().getFullYear();
 $('#linkX').href = TOKEN.links.x;
-$('#linkTg').href = TOKEN.links.telegram;
 $('#linkDex').href = TOKEN.links.dex;
 $('#buyBtn').href = TOKEN.links.buy;
 if (TOKEN.ca) $('#caText').textContent = TOKEN.ca;
@@ -298,8 +296,7 @@ const APP_BUILDERS = {
       ['pill', 'pump.fun', 'where every cow is born', 'https://pump.fun'],
       ['search', 'Solscan', 'verify the contract, read the chain', 'https://solscan.io'],
       ['ghost', 'Phantom', 'the wallet. download it, then never close it.', 'https://phantom.app'],
-      ['x', 'X / Twitter', 'the posting arena', TOKEN.links.x],
-      ['send', 'Telegram', 'the chat that never sleeps', TOKEN.links.telegram],
+      ['x', 'X / Twitter', 'the posting arena — @cowisonline', TOKEN.links.x],
     ];
     const RABBIT = [
       ['How many tabs is too many tabs? (Scientists: "yes")', 'A 4,000 word investigation. COW has read it twice.'],
@@ -467,7 +464,7 @@ const APP_BUILDERS = {
       moo: () => { out(rand(['moo.', 'MOO.', 'moo? moo.', 'm o o'])); liveCow.play('nod'); },
       ca: () => out(TOKEN.ca ? `CA: ${TOKEN.ca}` : 'CA: TBA — dropping at launch. stay online.', 'ok'),
       buy: () => out(`1) phantom wallet 2) get SOL 3) swap on jupiter → ${TOKEN.links.buy} 4) never log off`, 'ok'),
-      socials: () => out(`x: ${TOKEN.links.x}<br>tg: ${TOKEN.links.telegram}<br>dex: ${TOKEN.links.dex}`, 'ok'),
+      socials: () => out(`x: ${TOKEN.links.x}<br>dex: ${TOKEN.links.dex}`, 'ok'),
       status: () => out('status: ONLINE · mood: happy · tabs: 247 · grass: untouched', 'ok'),
       uptime: () => out(`uptime: ${$('#statUptime').textContent} (and counting)`, 'ok'),
       wave: () => { liveCow.play('wave'); out('o/'); }, dance: () => { liveCow.play('dance'); out('dancing…'); }, wink: () => { liveCow.play('wink'); out(';)'); },
