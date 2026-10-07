@@ -427,9 +427,14 @@ export class Cow {
       hg.add(eg);
       this.eyes.push(eg);
       // eyelid (hemisphere rotating down over the eye) — brown on the patch side
-      const lid = M(new THREE.SphereGeometry(0.228, 36, 18, 0, Math.PI * 2, 0, Math.PI / 2), s > 0 ? matBrown : matCream);
+      const lid = M(new THREE.SphereGeometry(0.262, 36, 18, 0, Math.PI * 2, 0, Math.PI / 2), s > 0 ? matBrown : matCream);
       lid.position.copy(eg.position);
       lid.rotation.x = -0.95;
+      // closed-eye line (a little happy arc) on the lid, only visible when the lid is shut
+      const lash = M(new THREE.TorusGeometry(0.13, 0.013, 8, 28, Math.PI), matEyeRing, 0, 0.262, 0);
+      lash.rotation.x = Math.PI / 2;
+      lash.castShadow = false;
+      lid.add(lash);
       hg.add(lid);
       this.lids.push(lid);
     }
@@ -452,15 +457,15 @@ export class Cow {
       this.ears.push(ear);
     }
 
-    // horns — ridged, curving outward like the logo (stacked spheres along a curve)
+    // horns — ridged, bulging outward then curving back up and inward like the logo (stacked spheres along a curve)
     for (const s of [-1, 1]) {
       const horn = new THREE.Group();
-      horn.position.set(s * 0.42, 0.78, -0.12);
+      horn.position.set(s * 0.46, 0.74, -0.12);
       const N = 11;
       for (let i = 0; i <= N; i++) {
         const t = i / N;
         const r = lerp(0.16, 0.045, t);
-        const seg = M(new THREE.SphereGeometry(r, 20, 14), matHorn, s * (0.02 + 0.46 * t * t), 0.52 * t - 0.14 * t * t, -0.04 * t);
+        const seg = M(new THREE.SphereGeometry(r, 20, 14), matHorn, s * (0.34 * t - 0.4 * t * t), 0.56 * t - 0.04 * t * t, -0.04 * t);
         seg.scale.set(1, 1.15, 1);
         horn.add(seg);
       }
@@ -617,8 +622,12 @@ export class Cow {
     this.head.rotation.set(P.headX, P.headY, P.headZ);
     this.armR.rotation.set(P.armR.x, 0, P.armR.z);
     this.armL.rotation.set(P.armL.x, 0, P.armL.z);
-    this.lids[0].rotation.x = lerp(-0.95, 1.57, clamp(P.lidL, 0, 1));
-    this.lids[1].rotation.x = lerp(-0.95, 1.57, clamp(P.lidR, 0, 1));
+    const lidL = clamp(P.lidL, 0, 1), lidR = clamp(P.lidR, 0, 1);
+    this.lids[0].rotation.x = lerp(-0.95, 1.62, lidL);
+    this.lids[1].rotation.x = lerp(-0.95, 1.62, lidR);
+    // pull the iris back into the eyeball while the lid closes so nothing pokes through
+    this.eyes[0].userData.inner.position.z = -0.12 * lidL;
+    this.eyes[1].userData.inner.position.z = -0.12 * lidR;
     for (const eg of this.eyes) eg.userData.inner.rotation.set(P.eyeY, P.eyeX, 0);
     this.ears[0].rotation.z = this.ears[0].userData.baseZ + P.earL;
     this.ears[1].rotation.z = this.ears[1].userData.baseZ - P.earR;
