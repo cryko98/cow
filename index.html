@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chronically On Web ($COW) — The cow that never logs off</title>
+  <meta name="description" content="$COW — Chronically On Web. A Solana memecoin about a cow who is browsing, posting, researching, overthinking… and still online." />
+  <meta name="theme-color" content="#060a18" />
+  <link rel="icon" type="image/jpeg" href="logo.jpg" />
+  <link rel="apple-touch-icon" href="logo.jpg" />
+  <meta property="og:title" content="Chronically On Web ($COW)" />
+  <meta property="og:description" content="Browsing. Posting. Researching. Overthinking. Still online. The Solana memecoin for the terminally online." />
+  <meta property="og:image" content="logo.jpg" />
+  <meta property="og:type" content="website" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <script type="importmap">
+    { "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js" } }
+  </script>
+</head>
+<body>
+  <div class="bg-grid" aria-hidden="true"></div>
+  <div class="bg-glow bg-glow-a" aria-hidden="true"></div>
+  <div class="bg-glow bg-glow-b" aria-hidden="true"></div>
+
+  <!-- NAV -->
+  <header class="nav" id="nav">
+    <a class="brand" href="#top">
+      <img src="logo.jpg" alt="Chronically On Web logo" class="brand-logo" />
+      <span class="brand-text">
+        <strong>Chronically On Web</strong>
+        <small>$COW · Solana</small>
+      </span>
+    </a>
+    <nav class="nav-links">
+      <a href="#about">About</a>
+      <a href="#live">Live</a>
+      <a href="#os">COW OS</a>
+      <a href="#tokenomics">Tokenomics</a>
+      <a href="#buy">How to buy</a>
+      <a href="#roadmap">Roadmap</a>
+    </nav>
+    <div class="nav-right">
+      <span class="online-pill"><i></i> still online</span>
+      <a class="btn btn-primary" href="#buy">Buy $COW</a>
+      <button class="nav-burger" id="navBurger" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </header>
+
+  <main id="top">
+    <!-- HERO -->
+    <section class="hero" id="hero">
+      <div class="hero-copy">
+        <div class="chalk-wrap">
+          <svg class="chalk-globe" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="26"/><ellipse cx="32" cy="32" rx="11" ry="26"/><path d="M6 32h52M10 18h44M10 46h44"/></svg>
+          <h1 class="chalk">CHRONICALLY<br/>ON WEB</h1>
+          <div class="chalk-sub"><span class="chalk-small">COW</span><svg viewBox="0 0 80 32" class="chalk-arrow" aria-hidden="true"><path d="M2 20c20-10 40-12 70-6M62 6l12 9-13 8"/></svg><span class="ticker-badge">$COW</span></div>
+        </div>
+        <p class="lede">The Solana memecoin for everyone who has never, ever logged off. COW is browsing, posting, researching, overthinking… and still online.</p>
+        <div class="hero-cta">
+          <a href="#buy" class="btn btn-primary btn-lg">Buy $COW</a>
+          <a href="#live" class="btn btn-ghost btn-lg">Watch COW live <span class="live-dot"></span></a>
+        </div>
+        <div class="stickies" aria-hidden="true">
+          <span class="sticky s1">IDEAS</span>
+          <span class="sticky s2">CONTENT</span>
+          <span class="sticky s3">RESEARCH</span>
+          <span class="sticky s4">POST</span>
+          <span class="sticky s5">OVRTHINK</span>
+          <span class="sticky s6">STILL ONLINE…</span>
+        </div>
+      </div>
+
+      <div class="hero-stage">
+        <div class="moon" aria-hidden="true"></div>
+        <div class="stage">
+          <canvas id="heroCanvas"></canvas>
+        </div>
+        <div class="hint">click the cow · move your mouse 👀</div>
+
+        <div class="float win fw-analytics">
+          <div class="win-bar"><span class="dots"><i></i><i></i><i></i></span><span class="win-title">Analytics</span></div>
+          <div class="win-body">
+            <svg viewBox="0 0 160 60" class="spark"><polyline points="2,50 24,42 44,46 66,30 88,36 110,18 132,24 158,6"/></svg>
+            <strong class="green">+248%</strong>
+          </div>
+        </div>
+
+        <div class="float win fw-posting">
+          <div class="win-bar"><span class="dots"><i></i><i></i><i></i></span><span class="win-title">Posting…</span></div>
+          <div class="win-body">
+            <ul class="checks">
+              <li class="done">Writing post…</li>
+              <li class="done">Adding media…</li>
+              <li class="done">Optimizing…</li>
+              <li class="loading">Posting…</li>
+            </ul>
+            <div class="bar"><i></i></div>
+          </div>
+        </div>
+
+        <div class="float win fw-research">
+          <div class="win-bar"><span class="dots"><i></i><i></i><i></i></span><span class="win-title">Research</span></div>
+          <div class="win-body">
+            <div class="search-fake">🔍 how to be more productive (but fun)</div>
+            <ul class="sugg">
+              <li>digital nomad tools</li>
+              <li>internet culture trends</li>
+              <li>how cows take over the internet</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="float win fw-term">
+          <div class="win-bar"><span class="dots"><i></i><i></i><i></i></span><span class="win-title">terminal</span></div>
+          <div class="win-body mono">
+            <div><span class="prompt">cow@web:~$</span> echo $MOOD</div>
+            <div class="cyan">INTERNET = HAPPY PLACE &lt;3</div>
+            <div><span class="prompt">cow@web:~$</span> <span class="cursor"></span></div>
+          </div>
+        </div>
+
+        <div class="float chat-bubble cb1">💬 <b>cowfan</b> this cow is goated 🐄🔥</div>
+        <div class="float chat-bubble cb2">💬 <b>webnomad</b> always online fr</div>
+      </div>
+    </section>
+
+    <!-- TICKER -->
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee-track">
+        <span>$COW</span><span>CHRONICALLY ON WEB</span><span>BROWSING</span><span>POSTING</span><span>RESEARCHING</span><span>OVERTHINKING</span><span>STILL ONLINE…</span><span>INTERNET = HAPPY PLACE &lt;3</span><span>SOLANA</span>
+        <span>$COW</span><span>CHRONICALLY ON WEB</span><span>BROWSING</span><span>POSTING</span><span>RESEARCHING</span><span>OVERTHINKING</span><span>STILL ONLINE…</span><span>INTERNET = HAPPY PLACE &lt;3</span><span>SOLANA</span>
+      </div>
+    </div>
+
+    <!-- ABOUT -->
+    <section class="section about" id="about">
+      <div class="about-grid">
+        <div class="about-img">
+          <img src="logo.jpg" alt="COW holding a laptop" />
+          <span class="tag tag-a">late nights</span>
+          <span class="tag tag-b">meme coins</span>
+          <span class="tag tag-c">internet</span>
+        </div>
+        <div>
+          <p class="eyebrow">// who is COW?</p>
+          <h2 class="h2">A cow. A laptop. Zero intention of touching grass.</h2>
+          <p class="muted">COW woke up one day in 2021, opened a browser tab, and never closed it. Since then COW has been browsing every chart, posting every meme, researching every rabbit hole and overthinking every candle. <b>Chronically On Web</b> is the token for the terminally online: no roadmap to sleep, just vibes and uptime.</p>
+          <div class="stats">
+            <div class="stat"><b id="statUptime">0d 00:00:00</b><span>online streak</span></div>
+            <div class="stat"><b>0%</b><span>tax</span></div>
+            <div class="stat"><b>1B</b><span>supply</span></div>
+            <div class="stat"><b>∞</b><span>tabs open</span></div>
+          </div>
+          <div class="books" aria-hidden="true">
+            <span>MEME COINS</span><span>IDEAS</span><span>LATE NIGHTS</span><span>INTERNET</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- LIVE -->
+    <section class="section live" id="live">
+      <p class="eyebrow center">// 24/7 stream · never offline</p>
+      <h2 class="h2 center">COW is <span class="red">LIVE</span>. Say hi.</h2>
+      <p class="muted center">Move your mouse and COW follows you. Click, type in chat or hit an emote — COW blinks, winks, waves, dances and overthinks on command.</p>
+
+      <div class="live-window win">
+        <div class="win-bar">
+          <span class="dots"><i></i><i></i><i></i></span>
+          <span class="win-title">🐄 cow_live — Chronically On Web</span>
+          <span class="win-actions"><span class="live-badge">● LIVE</span><span class="viewers" id="viewers">👁 1,248</span></span>
+        </div>
+        <div class="live-body">
+          <div class="live-stage">
+            <canvas id="liveCanvas"></canvas>
+            <div class="hearts" id="hearts"></div>
+            <div class="stream-overlay">
+              <div class="stream-tag">INTERNET = HAPPY PLACE &lt;3</div>
+              <div class="stream-status" id="streamStatus">COW is idle · browsing</div>
+            </div>
+            <div class="emotes">
+              <button data-emote="wave">👋 Wave</button>
+              <button data-emote="wink">😉 Wink</button>
+              <button data-emote="blink">👀 Blink</button>
+              <button data-emote="nod">👍 Nod</button>
+              <button data-emote="shake">🙅 Nope</button>
+              <button data-emote="dance">🕺 Dance</button>
+              <button data-emote="type">⌨️ Type</button>
+              <button data-emote="jump">🦘 Jump</button>
+              <button data-emote="spin">🔄 Spin</button>
+              <button data-emote="happy">😊 Happy</button>
+              <button data-emote="sleepy">😴 Sleepy</button>
+              <button id="heartBtn" class="heart">❤️ React</button>
+            </div>
+          </div>
+          <aside class="chat">
+            <div class="chat-head">Stream chat <span class="muted">· cow-only server</span></div>
+            <div class="chat-log" id="chatLog"></div>
+            <form class="chat-form" id="chatForm" autocomplete="off">
+              <input id="chatInput" placeholder="say gm, wave, dance, wen moon…" maxlength="120" />
+              <button type="submit">Send</button>
+            </form>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- COW OS -->
+    <section class="section os-section" id="os">
+      <p class="eyebrow center">// COW OS v2.4.8</p>
+      <h2 class="h2 center">Everything COW does, all day, every day.</h2>
+      <p class="muted center">Open the apps. Drag the windows. This is what being Chronically On Web looks like.</p>
+
+      <div class="os win">
+        <div class="win-bar">
+          <span class="dots"><i></i><i></i><i></i></span>
+          <span class="win-title">COW OS — desktop</span>
+          <span class="win-actions mono" id="osClock">00:00:00</span>
+        </div>
+        <div class="desktop" id="desktop">
+          <div class="os-checklist chalk-board">
+            <h3>daily routine</h3>
+            <label data-app="browse"><input type="checkbox" checked /> <span>BROWSING</span></label>
+            <label data-app="post"><input type="checkbox" checked /> <span>POSTING</span></label>
+            <label data-app="research"><input type="checkbox" checked /> <span>RESEARCHING</span></label>
+            <label data-app="overthink"><input type="checkbox" checked /> <span>OVERTHINKING</span></label>
+            <label data-app="online"><input type="checkbox" checked /> <span>STILL ONLINE…</span></label>
+            <svg viewBox="0 0 64 48" class="chalk-cow" aria-hidden="true"><path d="M14 14c-6-8-12-6-10 2 2 4 6 6 10 4M50 14c6-8 12-6 10 2-2 4-6 6-10 4M18 12c4-10 24-10 28 0 4 8 2 20-4 26-6 6-14 6-20 0-6-6-8-18-4-26z"/><circle cx="24" cy="22" r="2"/><circle cx="40" cy="22" r="2"/><ellipse cx="32" cy="34" rx="9" ry="6"/><circle cx="29" cy="34" r="1.3"/><circle cx="35" cy="34" r="1.3"/></svg>
+          </div>
+          <div class="os-icons">
+            <button class="os-icon" data-app="browse"><span>🌐</span>Browsing</button>
+            <button class="os-icon" data-app="post"><span>✍️</span>Posting</button>
+            <button class="os-icon" data-app="research"><span>🔍</span>Researching</button>
+            <button class="os-icon" data-app="overthink"><span>🌀</span>Overthinking</button>
+            <button class="os-icon" data-app="online"><span>🟢</span>Still Online</button>
+            <button class="os-icon" data-app="analytics"><span>📈</span>Analytics</button>
+            <button class="os-icon" data-app="terminal"><span>▶_</span>Terminal</button>
+          </div>
+          <div class="os-windows" id="osWindows"></div>
+          <div class="taskbar">
+            <button class="start" id="osStart"><img src="logo.jpg" alt="" /> COW</button>
+            <div class="tasks" id="osTasks"></div>
+            <span class="tray"><i class="dot"></i> online · <span id="trayClock">00:00</span></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOKENOMICS -->
+    <section class="section" id="tokenomics">
+      <p class="eyebrow center">// tokenomics</p>
+      <h2 class="h2 center">Simple numbers for a simple cow.</h2>
+      <div class="tok-grid">
+        <div class="card"><div class="card-ico">🪙</div><h3>1,000,000,000</h3><p>Total supply of $COW. Fixed. No more cows will be minted.</p></div>
+        <div class="card"><div class="card-ico">0️⃣</div><h3>0% / 0%</h3><p>No buy tax, no sell tax. COW doesn't do paperwork.</p></div>
+        <div class="card"><div class="card-ico">🔥</div><h3>LP burned</h3><p>Liquidity burned, mint authority revoked, freeze revoked.</p></div>
+        <div class="card"><div class="card-ico">🟣</div><h3>Solana</h3><p>Fast, cheap and always online — just like COW.</p></div>
+      </div>
+      <div class="ca win">
+        <div class="win-bar"><span class="dots"><i></i><i></i><i></i></span><span class="win-title">contract address</span></div>
+        <div class="win-body ca-body">
+          <code class="mono" id="caText">TBA — launching soon</code>
+          <button class="btn btn-primary" id="copyCa">Copy</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOW TO BUY -->
+    <section class="section" id="buy">
+      <p class="eyebrow center">// how to buy</p>
+      <h2 class="h2 center">Four steps. Then never log off.</h2>
+      <div class="steps">
+        <div class="step"><span class="num">01</span><h3>Get a wallet</h3><p>Install <a href="https://phantom.app" target="_blank" rel="noopener">Phantom</a> or <a href="https://solflare.com" target="_blank" rel="noopener">Solflare</a> on desktop or mobile.</p></div>
+        <div class="step"><span class="num">02</span><h3>Load some SOL</h3><p>Buy SOL on any exchange and send it to your wallet address.</p></div>
+        <div class="step"><span class="num">03</span><h3>Swap for $COW</h3><p>Paste the contract address into <a href="https://jup.ag" target="_blank" rel="noopener">Jupiter</a> or <a href="https://raydium.io" target="_blank" rel="noopener">Raydium</a> and swap.</p></div>
+        <div class="step"><span class="num">04</span><h3>Stay online</h3><p>Join the chat, post the memes, overthink the chart. Welcome to the herd.</p></div>
+      </div>
+      <div class="center"><a class="btn btn-primary btn-lg" id="buyBtn" href="https://jup.ag" target="_blank" rel="noopener">Open Jupiter ↗</a></div>
+    </section>
+
+    <!-- ROADMAP -->
+    <section class="section" id="roadmap">
+      <p class="eyebrow center">// roadmap (always loading)</p>
+      <h2 class="h2 center">The five stages of being online.</h2>
+      <div class="roadmap">
+        <div class="phase done"><span>Phase 1</span><h3>☑ Browsing</h3><p>Launch on Solana. Website, socials, first 1,000 tabs opened.</p></div>
+        <div class="phase done"><span>Phase 2</span><h3>☑ Posting</h3><p>Meme factory goes brrr. Community raids, sticker packs, the Wave.</p></div>
+        <div class="phase active"><span>Phase 3</span><h3>☑ Researching</h3><p>Dexscreener trending, listings on CoinGecko &amp; CMC, partnerships.</p></div>
+        <div class="phase"><span>Phase 4</span><h3>☐ Overthinking</h3><p>CEX listings, COW merch, the 3D cow becomes a game. Probably.</p></div>
+        <div class="phase"><span>Phase 5</span><h3>☐ Still online…</h3><p>World domination? COW is still researching that one.</p></div>
+      </div>
+    </section>
+
+    <!-- COMMUNITY -->
+    <section class="section community" id="community">
+      <p class="eyebrow center">// join the herd</p>
+      <h2 class="h2 center">Come be online with us.</h2>
+      <div class="socials">
+        <a class="social" id="linkX" href="#" target="_blank" rel="noopener"><span class="soc-ico">𝕏</span><b>X / Twitter</b><small>daily cow posts</small></a>
+        <a class="social" id="linkTg" href="#" target="_blank" rel="noopener"><span class="soc-ico">✈️</span><b>Telegram</b><small>the chat never sleeps</small></a>
+        <a class="social" id="linkDex" href="#" target="_blank" rel="noopener"><span class="soc-ico">📊</span><b>Dexscreener</b><small>overthink the chart</small></a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="foot-inner">
+      <div class="brand"><img src="logo.jpg" alt="" class="brand-logo" /><span><strong>Chronically On Web</strong> · $COW</span></div>
+      <p class="muted small">$COW is a memecoin with no intrinsic value or expectation of financial return. It exists for entertainment and community purposes only. Crypto is volatile — only spend what you can afford to lose. This is not financial advice. COW is not a licensed advisor. COW is a cow.</p>
+      <p class="muted small mono">© <span id="year"></span> Chronically On Web · still online</p>
+    </div>
+  </footer>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
