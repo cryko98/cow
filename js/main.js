@@ -68,12 +68,12 @@ const STATUS = {
 };
 
 const heroCow = new Cow($('#heroCanvas'), {
-  cameraZ: 8.2, cameraY: 0.2,
+  cameraZ: 8.9, cameraY: 0.3,
   onClick: () => spawnHearts($('#heroCanvas').parentElement, 3),
 });
 
 const liveCow = new Cow($('#liveCanvas'), {
-  cameraZ: 7.6, cameraY: 0.15,
+  cameraZ: 8.2, cameraY: 0.25,
   onEmote: (name) => {
     const st = $('#streamStatus');
     st.textContent = STATUS[name] || `COW: ${name}`;
