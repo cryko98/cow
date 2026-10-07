@@ -19,6 +19,8 @@ const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
 const rand = (arr) => arr[Math.floor(Math.random() * arr.length)];
 const pad = (n) => String(n).padStart(2, '0');
+// inline SVG icon from the sprite in index.html
+const ic = (name, cls = '') => `<svg class="ico ${cls}" aria-hidden="true"><use href="#i-${name}"/></svg>`;
 
 // ===== toast =====
 const toast = document.createElement('div');
@@ -40,8 +42,8 @@ $('#linkDex').href = TOKEN.links.dex;
 $('#buyBtn').href = TOKEN.links.buy;
 if (TOKEN.ca) $('#caText').textContent = TOKEN.ca;
 $('#copyCa').addEventListener('click', async () => {
-  if (!TOKEN.ca) return showToast('Contract address drops at launch — stay online 👀');
-  try { await navigator.clipboard.writeText(TOKEN.ca); showToast('Contract address copied 🐄'); } catch { showToast('Copy failed — select the text manually'); }
+  if (!TOKEN.ca) return showToast('Contract address drops at launch — stay online');
+  try { await navigator.clipboard.writeText(TOKEN.ca); showToast('Contract address copied'); } catch { showToast('Copy failed — select the text manually'); }
 });
 
 // ===== uptime / clocks =====
@@ -61,8 +63,8 @@ setInterval(tickClocks, 1000); tickClocks();
 
 // ===== 3D cows =====
 const STATUS = {
-  wave: 'COW is waving at you 👋', wink: 'COW winked. it was aimed at you.', blink: 'COW blinked. still awake.', nod: 'COW agrees.',
-  shake: 'COW disagrees. respectfully.', dance: 'COW is dancing 🕺', type: 'COW is typing…', jump: 'COW jumped. chart did too (probably)',
+  wave: 'COW is waving at you', wink: 'COW winked. it was aimed at you.', blink: 'COW blinked. still awake.', nod: 'COW agrees.',
+  shake: 'COW disagrees. respectfully.', dance: 'COW is dancing', type: 'COW is typing…', jump: 'COW jumped. chart did too (probably)',
   spin: 'COW is spinning. do not disturb.', happy: 'COW is happy :3', sleepy: 'COW is NOT sleeping. just resting eyes.', earflick: 'COW heard something.',
   lookaround: 'COW is browsing…',
 };
@@ -91,12 +93,17 @@ $$('[data-emote]').forEach((b) => b.addEventListener('click', () => {
   $('#live').scrollIntoView({ block: 'nearest', behavior: 'smooth' });
 }));
 
-// ===== hearts =====
+// ===== floating reactions (SVG hearts / sparkles / cows) =====
+const REACTIONS = [
+  ['heart', '#ff4d6d'], ['heart', '#3b82f6'], ['heart', '#3ef2b3'], ['heart', '#22d3ee'], ['cow', '#f6ead2'], ['sparkle', '#ffd34d'],
+];
 function spawnHearts(container, n = 1) {
   const layer = container.querySelector('.hearts') || (() => { const d = document.createElement('div'); d.className = 'hearts'; container.appendChild(d); return d; })();
   for (let i = 0; i < n; i++) {
+    const [name, color] = rand(REACTIONS);
     const s = document.createElement('span');
-    s.textContent = rand(['❤️', '💙', '🐄', '✨', '💚', '🩵']);
+    s.innerHTML = ic(name, name === 'heart' ? 'fill' : '');
+    s.style.color = color;
     s.style.left = 30 + Math.random() * 40 + '%';
     s.style.setProperty('--dx', (Math.random() * 160 - 80) + 'px');
     s.style.setProperty('--rot', (Math.random() * 60 - 30) + 'deg');
@@ -108,7 +115,7 @@ function spawnHearts(container, n = 1) {
 $('#heartBtn').addEventListener('click', () => {
   spawnHearts($('#hearts').parentElement, 6);
   if (!liveCow.isBusy || Math.random() < 0.3) liveCow.play(rand(['happy', 'wink', 'wave']));
-  chatSystem('you sent ❤️');
+  chatSystem('you sent a heart');
 });
 
 // ===== chat =====
@@ -118,30 +125,30 @@ const CHATTERS = [
   { n: 'nightowl', c: '#c084fc', l: '' }, { n: 'pixelcow', c: '#4ade80', l: '' }, { n: 'tabhoarder', c: '#38bdf8', l: '' }, { n: 'wen_lambo', c: '#f97316', l: '' },
 ];
 const CHAT_LINES = [
-  'this cow is goated 🐄🔥', 'always online fr', 'legend', 'build more!', 'mooing through life', 'gm cow ☀️', 'wen moon', 'touch grass? never heard of her',
-  'the chart is just vibes', 'chronically on web is a lifestyle', 'someone tell COW to sleep', 'ser the cow waved at me 😭', 'is COW ever offline??', 'uptime 100% confirmed',
-  '$COW to the pasture 🚀', 'bro has 247 tabs open', 'cow pls wink', 'DO THE DANCE', 'i bought more. do not tell my wife', 'internet = happy place <3',
+  'this cow is goated', 'always online fr', 'legend', 'build more!', 'mooing through life', 'gm cow', 'wen moon', 'touch grass? never heard of her',
+  'the chart is just vibes', 'chronically on web is a lifestyle', 'someone tell COW to sleep', 'ser the cow waved at me', 'is COW ever offline??', 'uptime 100% confirmed',
+  '$COW to the pasture', 'bro has 247 tabs open', 'cow pls wink', 'DO THE DANCE', 'i bought more. do not tell my wife', 'internet = happy place <3',
   'this is the most online cow i have ever seen', 'posting through it', 'overthinking the dip rn', 'research: complete. conclusion: moo', 'who needs sleep when you have wifi',
-  'cow typing speed is unreal', 'LFG 🐄🐄🐄', 'gm gm gm', 'the laptop sticker is a cow. of a cow. genius.', 'chart looks like my sleep schedule (none)',
+  'cow typing speed is unreal', 'LFG', 'gm gm gm', 'the laptop sticker is a cow. of a cow. genius.', 'chart looks like my sleep schedule (none)',
   'wave at me cow!!', 'can we get a spin', 'blink twice if ur ok cow', 'rare offline moment: never', 'certified still online',
 ];
 const COW_REPLIES = {
-  wave: ['👋 hi chat', 'waving at every single one of you. individually.', 'o/'],
-  wink: ['😉', 'that one was for you', 'wink deployed'],
-  blink: ['👁👁', 'eyes: lubricated. tabs: still open.', 'i blinked. i missed a candle.'],
+  wave: ['hi chat o/', 'waving at every single one of you. individually.', 'o/'],
+  wink: [';)', 'that one was for you', 'wink deployed'],
+  blink: ['blinked. missed a candle.', 'eyes: lubricated. tabs: still open.', 'blink complete'],
   nod: ['yes.', 'agreed. buying more wifi.', 'nod nod'],
   shake: ['no.', 'absolutely not logging off', 'shake shake'],
-  dance: ['🕺🐄 the floor is lava and the lava is a chart', 'dancing through the dip', 'MOOve your body'],
+  dance: ['the floor is lava and the lava is a chart', 'dancing through the dip', 'MOOve your body'],
   type: ['typing a post… hold on', 'kjsdhfkjsdhf (that was a post)', 'posting speed: cow'],
   jump: ['boing', 'the jump is the roadmap', 'that was 0.3s of being offline, never again'],
-  spin: ['dizzy. still online.', '🔄 rotating my portfolio', 'wheeeee'],
+  spin: ['dizzy. still online.', 'rotating my portfolio', 'wheeeee'],
   happy: [':3', 'happy cow, happy chart', 'internet = happy place <3'],
   sleepy: ['NOT sleeping. resting eyes between tabs.', 'zzz… jk', 'sleep is a scam invented by offline people'],
-  gm: ['gm chat ☀️🐄', 'gm! already online for 19 hours', 'gm gm'],
-  moon: ['wen moon? i am the moon. i never set.', 'moon is just a bigger tab', '🌙 researching'],
+  gm: ['gm chat', 'gm! already online for 19 hours', 'gm gm'],
+  moon: ['wen moon? i am the moon. i never set.', 'moon is just a bigger tab', 'researching the moon'],
   buy: ['buy button is in the nav. always has been.', 'the herd welcomes you', 'swap SOL → $COW on Jupiter. then stay online.'],
-  hi: ['hi!! 👋', 'hello fellow online person', 'welcome to the stream that never ends'],
-  love: ['love you too chat 💙', '❤️🐄', 'blushing in cow'],
+  hi: ['hi!! o/', 'hello fellow online person', 'welcome to the stream that never ends'],
+  love: ['love you too chat <3', '<3 moo', 'blushing in cow'],
   default: ['moo', 'noted. overthinking it now.', 'adding that to my 247 tabs', 'interesting. researching.', 'moo?', 'posting about this later', 'brb (not really, never leaving)'],
 };
 
@@ -157,11 +164,11 @@ function addMsg(html, cls = '') {
 const esc = (s) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 function chatUser(u, text) { addMsg(`${u.l ? `<span class="lvl">${u.l}</span>` : ''}<b style="color:${u.c}">${u.n}</b>${esc(text)}`); }
 function chatSystem(text) { addMsg(esc(text), 'sys'); }
-function chatCow(text) { addMsg(`<span class="lvl">🐄 LIVE</span><b>COW</b>${esc(text)}`, 'cow'); }
+function chatCow(text) { addMsg(`<span class="lvl">${ic('cow')} LIVE</span><b>COW</b>${esc(text)}`, 'cow'); }
 function chatBot(key) { chatCow(rand(COW_REPLIES[key] || COW_REPLIES.default)); }
 
 chatSystem('welcome to the stream · COW has been online since forever');
-chatUser(CHATTERS[0], 'this cow is goated 🐄🔥');
+chatUser(CHATTERS[0], 'this cow is goated');
 chatUser(CHATTERS[1], 'always online fr');
 chatUser(CHATTERS[2], 'legend');
 chatUser(CHATTERS[3], 'build more!');
@@ -175,7 +182,7 @@ setTimeout(randomChat, 2500);
 
 const viewersEl = $('#viewers');
 let viewers = 1248;
-setInterval(() => { viewers = Math.max(900, viewers + Math.round(Math.random() * 30 - 12)); viewersEl.textContent = `👁 ${viewers.toLocaleString()}`; }, 3000);
+setInterval(() => { viewers = Math.max(900, viewers + Math.round(Math.random() * 30 - 12)); viewersEl.textContent = viewers.toLocaleString(); }, 3000);
 
 $('#chatForm').addEventListener('submit', (e) => {
   e.preventDefault();
@@ -187,7 +194,7 @@ $('#chatForm').addEventListener('submit', (e) => {
   const t = text.toLowerCase();
   const map = [
     [/wave|hi\b|hello|hey/, 'wave', 'hi'], [/wink/, 'wink', 'wink'], [/blink/, 'blink', 'blink'], [/nod|yes|agree/, 'nod', 'nod'], [/no\b|nope|shake/, 'shake', 'shake'],
-    [/dance|party/, 'dance', 'dance'], [/type|post/, 'type', 'type'], [/jump|pump/, 'jump', 'jump'], [/spin|turn/, 'spin', 'spin'], [/happy|love|❤|💙/, 'happy', 'love'],
+    [/dance|party/, 'dance', 'dance'], [/type|post/, 'type', 'type'], [/jump|pump/, 'jump', 'jump'], [/spin|turn/, 'spin', 'spin'], [/happy|love|<3/, 'happy', 'love'],
     [/sleep|tired|rest/, 'sleepy', 'sleepy'], [/\bgm\b|morning/, 'wave', 'gm'], [/moon|wen/, 'jump', 'moon'], [/buy|ca\b|contract|how/, 'nod', 'buy'],
   ];
   let hit = null;
@@ -196,7 +203,7 @@ $('#chatForm').addEventListener('submit', (e) => {
     if (hit) { liveCow.play(hit.emote); chatBot(hit.reply); }
     else { liveCow.play(rand(['lookaround', 'nod', 'earflick', 'type'])); chatBot('default'); }
   }, 500);
-  if (/wave|hi\b|hello|hey/.test(t)) spawnHearts($('#hearts').parentElement, 2);
+  if (/wave|hi\b|hello|hey|<3|love/.test(t)) spawnHearts($('#hearts').parentElement, 2);
 });
 
 // ===== COW OS =====
@@ -207,13 +214,13 @@ const apps = new Map();
 let zTop = 10;
 
 const APP_META = {
-  browse: { title: '🌐 Browsing — cow://trending', w: 480 },
-  post: { title: '✍️ Posting…', w: 440 },
-  research: { title: '🔍 Research', w: 460 },
-  overthink: { title: '🌀 Overthinking.exe', w: 420 },
-  online: { title: '🟢 Still Online…', w: 400 },
-  analytics: { title: '📈 Analytics', w: 420 },
-  terminal: { title: '▶_ terminal — cow@web', w: 460 },
+  browse: { icon: 'globe', name: 'Browsing', title: 'Browsing — cow://trending', w: 480 },
+  post: { icon: 'pencil', name: 'Posting', title: 'Posting…', w: 440 },
+  research: { icon: 'search', name: 'Research', title: 'Research', w: 460 },
+  overthink: { icon: 'spiral', name: 'Overthinking', title: 'Overthinking.exe', w: 420 },
+  online: { icon: 'online', name: 'Still Online', title: 'Still Online…', w: 400 },
+  analytics: { icon: 'trend', name: 'Analytics', title: 'Analytics', w: 420 },
+  terminal: { icon: 'terminal', name: 'Terminal', title: 'terminal — cow@web', w: 460 },
 };
 
 function openApp(id) {
@@ -226,10 +233,10 @@ function openApp(id) {
   const maxLeft = Math.max(100, winLayer.clientWidth - meta.w - 270);
   el.style.left = Math.min(215 + count * 44, maxLeft) + 'px';
   el.style.top = Math.min(16 + count * 36, 200) + 'px';
-  el.innerHTML = `<div class="win-bar"><span class="dots"><i></i><i></i><i></i></span><span class="win-title">${meta.title}</span><span class="win-actions"><button class="app-min" title="Minimize">—</button><button class="app-close" title="Close">✕</button></span></div><div class="app-body"></div>`;
+  el.innerHTML = `<div class="win-bar"><span class="dots"><i></i><i></i><i></i></span><span class="win-title">${ic(meta.icon)} ${meta.title}</span><span class="win-actions"><button class="app-min" title="Minimize">—</button><button class="app-close" title="Close">✕</button></span></div><div class="app-body"></div>`;
   winLayer.appendChild(el);
   const task = document.createElement('button');
-  task.textContent = meta.title.replace(/—.*$/, '').trim();
+  task.innerHTML = `${ic(meta.icon)} ${meta.name}`;
   task.addEventListener('click', () => { if (el.classList.contains('min')) { el.classList.remove('min'); focusApp(id); } else if (el.classList.contains('focused')) { el.classList.add('min'); task.classList.remove('active'); } else focusApp(id); });
   tasks.appendChild(task);
   const app = { el, task, id };
@@ -286,13 +293,13 @@ $('#osStart').addEventListener('click', () => {
 const APP_BUILDERS = {
   browse(body) {
     const SITES = [
-      ['📊', 'Dexscreener', 'overthink the $COW chart in real time', TOKEN.links.dex],
-      ['🪐', 'Jupiter', 'swap SOL → $COW with the best route', 'https://jup.ag'],
-      ['💊', 'pump.fun', 'where every cow is born', 'https://pump.fun'],
-      ['🔎', 'Solscan', 'verify the contract, read the chain', 'https://solscan.io'],
-      ['👻', 'Phantom', 'the wallet. download it, then never close it.', 'https://phantom.app'],
-      ['𝕏', 'X / Twitter', 'the posting arena', TOKEN.links.x],
-      ['✈️', 'Telegram', 'the chat that never sleeps', TOKEN.links.telegram],
+      ['chart', 'Dexscreener', 'overthink the $COW chart in real time', TOKEN.links.dex],
+      ['planet', 'Jupiter', 'swap SOL → $COW with the best route', 'https://jup.ag'],
+      ['pill', 'pump.fun', 'where every cow is born', 'https://pump.fun'],
+      ['search', 'Solscan', 'verify the contract, read the chain', 'https://solscan.io'],
+      ['ghost', 'Phantom', 'the wallet. download it, then never close it.', 'https://phantom.app'],
+      ['x', 'X / Twitter', 'the posting arena', TOKEN.links.x],
+      ['send', 'Telegram', 'the chat that never sleeps', TOKEN.links.telegram],
     ];
     const RABBIT = [
       ['How many tabs is too many tabs? (Scientists: "yes")', 'A 4,000 word investigation. COW has read it twice.'],
@@ -302,9 +309,9 @@ const APP_BUILDERS = {
       ['Digital nomad setup 2026: laptop, cow, vibes', 'The minimalist guide to being maximally online.'],
       ['Internet culture trends: the "still online" era', 'Everyone is COW now. You just didn\'t notice.'],
     ];
-    body.innerHTML = `<div class="app-toolbar"><button class="app-btn alt">←</button><button class="app-btn alt">→</button><button class="app-btn alt">↻</button><input value="cow://trending" readonly /></div>
-      <div class="link-list">${SITES.map((s) => `<a href="${s[3]}" target="_blank" rel="noopener"><span>${s[0]}</span><div><b>${s[1]}</b><small>${s[2]}</small></div></a>`).join('')}</div>
-      <div class="page-card"><h4 class="rh"></h4><p class="muted rp" style="margin:0"></p><button class="app-btn" style="margin-top:.5rem">🐄 I'm feeling lucky</button></div>`;
+    body.innerHTML = `<div class="app-toolbar"><button class="app-btn alt">←</button><button class="app-btn alt">→</button><button class="app-btn alt">${ic('spin')}</button><input value="cow://trending" readonly /></div>
+      <div class="link-list">${SITES.map((s) => `<a href="${s[3]}" target="_blank" rel="noopener"><span>${ic(s[0])}</span><div><b>${s[1]}</b><small>${s[2]}</small></div></a>`).join('')}</div>
+      <div class="page-card"><h4 class="rh"></h4><p class="muted rp" style="margin:0"></p><button class="app-btn" style="margin-top:.5rem">${ic('cow')} I'm feeling lucky</button></div>`;
     const rh = body.querySelector('.rh'), rp = body.querySelector('.rp');
     const lucky = () => { const r = rand(RABBIT); rh.textContent = r[0]; rp.textContent = r[1]; };
     lucky();
@@ -313,7 +320,7 @@ const APP_BUILDERS = {
 
   post(body) {
     const POSTS = [
-      'gm. i have been online for 19 hours. this is a cry for help (it is not) 🐄 $COW',
+      'gm. i have been online for 19 hours. this is a cry for help (it is not) $COW',
       'just finished researching. conclusion: moo. $COW',
       'they said touch grass. i opened a tab about grass. $COW',
       'chart went down so i opened 12 more tabs. problem solved. $COW',
@@ -325,7 +332,7 @@ const APP_BUILDERS = {
       'overthinking the candle, posting the meme, researching the dip. multitasking. $COW',
     ];
     body.innerHTML = `<textarea class="app-input"></textarea>
-      <div class="app-toolbar" style="margin:.6rem 0 0"><button class="app-btn alt gen">🎲 Generate</button><button class="app-btn alt copy">Copy</button><button class="app-btn post">Post on 𝕏</button></div>
+      <div class="app-toolbar" style="margin:.6rem 0 0"><button class="app-btn alt gen">${ic('dice')} Generate</button><button class="app-btn alt copy">${ic('copy')} Copy</button><button class="app-btn post">Post on ${ic('x')}</button></div>
       <ul class="progress-list"><li class="todo">Writing post…</li><li class="todo">Adding media…</li><li class="todo">Optimizing…</li><li class="todo">Posting…</li></ul>
       <div class="muted small res" style="margin-top:.5rem"></div>`;
     const ta = body.querySelector('textarea'); ta.value = rand(POSTS);
@@ -356,7 +363,7 @@ const APP_BUILDERS = {
       { k: /buy|solana|how/, r: [['How to buy $COW', 'Phantom wallet → get SOL → swap on Jupiter → stay online.'], ['Where is the CA?', TOKEN.ca || 'Dropping at launch. COW is researching the perfect timing.']] },
       { k: /memecoin|what is/, r: [['What is a memecoin?', 'A coin powered by community, culture and an unreasonable amount of posting.'], ['Is it serious?', 'No. That is the point. See disclaimer. Then see the cow.']] },
     ];
-    body.innerHTML = `<div class="app-toolbar"><input placeholder="🔍 search the entire internet (cow edition)" /><button class="app-btn">Go</button></div>
+    body.innerHTML = `<div class="app-toolbar"><input placeholder="search the entire internet (cow edition)" /><button class="app-btn">${ic('search')} Go</button></div>
       <ul class="sugg" style="margin-bottom:.5rem">${SUGG.map((s) => `<li>${s}</li>`).join('')}</ul><div class="results"></div>`;
     const input = body.querySelector('input'), results = body.querySelector('.results');
     const run = (q) => {
@@ -381,7 +388,7 @@ const APP_BUILDERS = {
       'did the chat see me wave? did they like it? was it too much?', 'is "still online" a flex or a diagnosis', 'what if it goes up and i am not online to see it (impossible)', 'moo. (anxious)',
     ];
     body.innerHTML = `<p class="muted" style="margin:0 0 .4rem">Press the button. COW will take it from here.</p>
-      <div class="app-toolbar" style="margin:0"><button class="app-btn pink start">🌀 Start overthinking</button><button class="app-btn alt grass">🌱 Touch grass</button></div>
+      <div class="app-toolbar" style="margin:0"><button class="app-btn pink start">${ic('spiral')} Start overthinking</button><button class="app-btn alt grass">${ic('leaf')} Touch grass</button></div>
       <div class="meter"><i></i></div><div class="muted small mono lvl">overthink level: 0%</div><div class="thoughts"></div>`;
     const thoughts = body.querySelector('.thoughts'), meter = body.querySelector('.meter i'), lvl = body.querySelector('.lvl');
     let level = 0, timer = null;
@@ -396,7 +403,7 @@ const APP_BUILDERS = {
     body.querySelector('.start').addEventListener('click', () => { if (timer) return; spawn(); timer = setInterval(spawn, 900); });
     body.querySelector('.grass').addEventListener('click', () => {
       clearInterval(timer); timer = null; level = 0; meter.style.width = '0%'; lvl.textContent = 'overthink level: 0% — grass touched (through a screen)';
-      thoughts.innerHTML = '<div class="thought" style="border-color:rgba(62,242,179,.4);background:rgba(62,242,179,.08)">🌱 ok. breathing. opening one (1) tab about grass.</div>';
+      thoughts.innerHTML = `<div class="thought" style="border-color:rgba(62,242,179,.4);background:rgba(62,242,179,.08)">${ic('leaf', 'green')} ok. breathing. opening one (1) tab about grass.</div>`;
       liveCow.play('happy');
     });
     app.cleanup = () => clearInterval(timer);
@@ -410,14 +417,14 @@ const APP_BUILDERS = {
         <div><b class="tabs">247</b><span>tabs open</span></div>
         <div><b class="ping">12 ms</b><span>ping to the internet</span></div>
         <div><b>∞</b><span>days since touching grass</span></div>
-        <div><b class="coffee">☕ × 9</b><span>coffee consumed</span></div>
+        <div><b class="coffee">${ic('coffee')} × 9</b><span>coffee consumed</span></div>
       </div>
-      <div class="app-toolbar" style="margin:.6rem 0 0"><button class="app-btn">📡 Ping COW</button><button class="app-btn alt tab">+ open tab</button></div><div class="muted small mono log" style="margin-top:.4rem"></div>`;
+      <div class="app-toolbar" style="margin:.6rem 0 0"><button class="app-btn">${ic('radio')} Ping COW</button><button class="app-btn alt tab">${ic('plus')} open tab</button></div><div class="muted small mono log" style="margin-top:.4rem"></div>`;
     const log = body.querySelector('.log'), tabs = body.querySelector('.tabs'), ping = body.querySelector('.ping'), coffee = body.querySelector('.coffee');
     let nTabs = 247, nCoffee = 9;
     body.querySelector('.app-btn').addEventListener('click', () => { const ms = 8 + Math.floor(Math.random() * 20); ping.textContent = ms + ' ms'; log.textContent = `PING cow… 64 bytes: time=${ms}ms — reply: "moo, still here"`; liveCow.play('wave'); });
     body.querySelector('.tab').addEventListener('click', () => { nTabs++; tabs.textContent = nTabs; log.textContent = `opened tab #${nTabs}: "is ${nTabs} tabs too many"`; });
-    const iv = setInterval(() => { if (Math.random() < 0.5) { nTabs++; tabs.textContent = nTabs; } if (Math.random() < 0.15) { nCoffee++; coffee.textContent = `☕ × ${nCoffee}`; } }, 4000);
+    const iv = setInterval(() => { if (Math.random() < 0.5) { nTabs++; tabs.textContent = nTabs; } if (Math.random() < 0.15) { nCoffee++; coffee.innerHTML = `${ic('coffee')} × ${nCoffee}`; } }, 4000);
     app.cleanup = () => clearInterval(iv);
     tickClocks();
   },
@@ -456,15 +463,15 @@ const APP_BUILDERS = {
     const out = (html, cls = '') => { const d = document.createElement('div'); if (cls) d.className = cls; d.innerHTML = html; term.appendChild(d); term.scrollTop = term.scrollHeight; body.scrollTop = body.scrollHeight; };
     const CMDS = {
       help: () => out('commands: help, gm, moo, ca, buy, socials, status, uptime, wave, dance, wink, jump, spin, tabs, grass, clear', 'ok'),
-      gm: () => { out('gm ☀️ already online for 19 hours'); liveCow.play('wave'); },
+      gm: () => { out('gm — already online for 19 hours'); liveCow.play('wave'); },
       moo: () => { out(rand(['moo.', 'MOO.', 'moo? moo.', 'm o o'])); liveCow.play('nod'); },
       ca: () => out(TOKEN.ca ? `CA: ${TOKEN.ca}` : 'CA: TBA — dropping at launch. stay online.', 'ok'),
       buy: () => out(`1) phantom wallet 2) get SOL 3) swap on jupiter → ${TOKEN.links.buy} 4) never log off`, 'ok'),
       socials: () => out(`x: ${TOKEN.links.x}<br>tg: ${TOKEN.links.telegram}<br>dex: ${TOKEN.links.dex}`, 'ok'),
       status: () => out('status: ONLINE · mood: happy · tabs: 247 · grass: untouched', 'ok'),
       uptime: () => out(`uptime: ${$('#statUptime').textContent} (and counting)`, 'ok'),
-      wave: () => { liveCow.play('wave'); out('👋'); }, dance: () => { liveCow.play('dance'); out('🕺🐄'); }, wink: () => { liveCow.play('wink'); out('😉'); },
-      jump: () => { liveCow.play('jump'); out('boing'); }, spin: () => { liveCow.play('spin'); out('🔄'); },
+      wave: () => { liveCow.play('wave'); out('o/'); }, dance: () => { liveCow.play('dance'); out('dancing…'); }, wink: () => { liveCow.play('wink'); out(';)'); },
+      jump: () => { liveCow.play('jump'); out('boing'); }, spin: () => { liveCow.play('spin'); out('spinning…'); },
       tabs: () => out('247 tabs open. closing 0. opening 3.'),
       grass: () => out('error: grass not found. did you mean: wifi?', 'err'),
       sudo: () => out('cow is not in the sudoers file. this incident will be posted.', 'err'),
