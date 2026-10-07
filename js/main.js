@@ -67,11 +67,6 @@ const STATUS = {
   lookaround: 'COW is browsing…',
 };
 
-const heroCow = new Cow($('#heroCanvas'), {
-  cameraZ: 8.9, cameraY: 0.3,
-  onClick: () => spawnHearts($('#heroCanvas').parentElement, 3),
-});
-
 const liveCow = new Cow($('#liveCanvas'), {
   cameraZ: 8.2, cameraY: 0.25,
   onEmote: (name) => {
